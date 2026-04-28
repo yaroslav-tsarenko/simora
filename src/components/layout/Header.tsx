@@ -128,7 +128,7 @@ export function Header() {
                     <Link href="/account/settings" className="flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-surface transition-colors" onClick={() => setUserMenuOpen(false)}>
                       <User className="h-4 w-4" /> Settings
                     </Link>
-                    <button onClick={() => { logout(); setUserMenuOpen(false); }} className="flex w-full items-center gap-2 px-4 py-2 text-sm text-danger hover:bg-surface transition-colors">
+                    <button onClick={async () => { await logout(); setUserMenuOpen(false); }} className="flex w-full items-center gap-2 px-4 py-2 text-sm text-danger hover:bg-surface transition-colors">
                       <LogOut className="h-4 w-4" /> Sign Out
                     </button>
                   </div>
@@ -190,7 +190,7 @@ export function Header() {
             {isAuthenticated ? (
               <div className="mt-4 space-y-2 sm:hidden">
                 <Link href="/account" onClick={() => setMobileOpen(false)} className="block rounded-xl bg-primary py-2.5 text-center text-sm font-semibold text-white">Dashboard</Link>
-                <button onClick={() => { logout(); setMobileOpen(false); }} className="w-full rounded-xl border border-danger py-2.5 text-center text-sm font-medium text-danger">Sign Out</button>
+                <button onClick={async () => { await logout(); setMobileOpen(false); }} className="w-full rounded-xl border border-danger py-2.5 text-center text-sm font-medium text-danger">Sign Out</button>
               </div>
             ) : (
               <div className="mt-4 flex gap-3 sm:hidden">

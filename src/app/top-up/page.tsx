@@ -11,7 +11,7 @@ import { formatPrice } from '@/lib/currency';
 import { topUpOptions } from '@/data/navigation';
 
 export default function TopUpPage() {
-  const { balance, walletLoaded, topUp, currency } = useApp();
+  const { balance, walletLoaded, topUp, currency, isAuthenticated } = useApp();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState('');
   const [useCustom, setUseCustom] = useState(false);
@@ -53,16 +53,21 @@ export default function TopUpPage() {
       setError('Minimum top-up amount is £10.');
       return;
     }
+    if (!isAuthenticated) {
+      setError('Please sign in to top up your wallet.');
+      return;
+    }
 
     setProcessing(true);
     setError('');
 
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    topUp(effectiveAmount);
+    const ok = await topUp(effectiveAmount);
+    if (ok) {
+      setSuccess(true);
+    } else {
+      setError('Top-up failed. Please try again.');
+    }
     setProcessing(false);
-    setSuccess(true);
   }
 
   if (success) {

@@ -12,6 +12,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useApp();
   const router = useRouter();
 
@@ -20,10 +21,12 @@ export default function SignInPage() {
     return null;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    const ok = login(email, password);
+    setLoading(true);
+    const ok = await login(email, password);
+    setLoading(false);
     if (ok) {
       router.push('/account');
     } else {
@@ -97,8 +100,8 @@ export default function SignInPage() {
               <Link href="/faq" className="text-sm font-medium text-primary hover:text-primary-dark">Forgot password?</Link>
             </div>
 
-            <button type="submit" className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors">
-              Sign In
+            <button type="submit" disabled={loading} className="w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark transition-colors disabled:opacity-50">
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 

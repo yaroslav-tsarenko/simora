@@ -2,49 +2,81 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-const AUTH_KEY = 'simora_auth';
-const WALLET_KEY = 'simora_wallet_balance';
-
-const TEST_USER = {
-  email: 'test@gmail.com',
-  password: 'test123!',
-  name: 'Test User',
-};
-
 export interface User {
+  id: string;
   email: string;
   name: string;
+  balance: number;
 }
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const stored = localStorage.getItem(AUTH_KEY);
-    if (stored) {
-      try { setUser(JSON.parse(stored)); } catch { /* ignore */ }
-    }
-    setLoaded(true);
-  }, []);
-
-  const login = useCallback((email: string, password: string): boolean => {
-    if (email === TEST_USER.email && password === TEST_USER.password) {
-      const u: User = { email: TEST_USER.email, name: TEST_USER.name };
-      setUser(u);
-      localStorage.setItem(AUTH_KEY, JSON.stringify(u));
-      if (!localStorage.getItem(WALLET_KEY) || parseFloat(localStorage.getItem(WALLET_KEY)!) === 0) {
-        localStorage.setItem(WALLET_KEY, '10000.00');
+  const checkAuth = useCallback(async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      const data = await res.json();
+      if (data.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
       }
-      return true;
+    } catch {
+      setUser(null);
+    } finally {
+      setLoaded(true);
     }
-    return false;
   }, []);
 
-  const logout = useCallback(() => {
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const login = useCallback(async (email: string, password: string): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        setUser(data.user);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  const register = useCallback(async (name: string, email: string, password: string): Promise<{ ok: boolean; error?: string }> => {
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.user) {
+        setUser(data.user);
+        return { ok: true };
+      }
+      return { ok: false, error: data.error || 'Registration failed' };
+    } catch {
+      return { ok: false, error: 'Network error' };
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
     setUser(null);
-    localStorage.removeItem(AUTH_KEY);
   }, []);
 
-  return { user, isAuthenticated: !!user, loaded, login, logout };
+  const refreshUser = useCallback(async () => {
+    await checkAuth();
+  }, [checkAuth]);
+
+  return { user, isAuthenticated: !!user, loaded, login, logout, register, refreshUser };
 }

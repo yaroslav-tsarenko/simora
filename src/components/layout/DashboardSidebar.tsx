@@ -19,8 +19,8 @@ export function DashboardSidebar({ activePath }: { activePath: string }) {
   const { logout, user } = useApp();
   const router = useRouter();
 
-  function handleLogout() {
-    logout();
+  async function handleLogout() {
+    await logout();
     router.push('/');
   }
 

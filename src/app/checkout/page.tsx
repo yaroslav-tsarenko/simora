@@ -19,24 +19,24 @@ import { useApp } from '@/hooks/AppProvider';
 import { formatPrice } from '@/lib/currency';
 
 export default function CheckoutPage() {
-  const { cartItems, cartTotal, cartCount, balance, walletLoaded, canAfford, spend, clearCart, currency, addPurchase } = useApp();
+  const { cartItems, cartTotal, cartCount, balance, walletLoaded, canAfford, clearCart, currency, buyItems, isAuthenticated } = useApp();
   const [processing, setProcessing] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [error, setError] = useState('');
   const [purchasedItems, setPurchasedItems] = useState<typeof cartItems>([]);
   const [paidTotal, setPaidTotal] = useState(0);
 
   async function handlePay() {
     setProcessing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    const ok = spend(cartTotal);
-    if (ok) {
+    setError('');
+    const result = await buyItems(cartItems);
+    if (result.ok) {
       setPurchasedItems([...cartItems]);
       setPaidTotal(cartTotal);
-      cartItems.forEach((item) => {
-        addPurchase({ planId: item.planId, name: item.name, data: item.data, validity: item.validity, price: item.price, coverage: item.coverage });
-      });
       clearCart();
       setCompleted(true);
+    } else {
+      setError(result.error || 'Purchase failed');
     }
     setProcessing(false);
   }
@@ -128,6 +128,25 @@ export default function CheckoutPage() {
         <h1 className="text-3xl font-bold text-text mb-2">Checkout</h1>
         <p className="text-text-light">Review your order and complete payment.</p>
       </AnimatedSection>
+
+      {!isAuthenticated && (
+        <AnimatedSection delay={0.05}>
+          <div className="mt-6 rounded-2xl border border-warning/30 bg-warning/5 p-5">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-5 w-5 text-warning flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-text mb-1">Sign in required</h3>
+                <p className="text-sm text-text-light mb-3">You need to sign in to complete your purchase.</p>
+                <Link href="/sign-in" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">Sign In <ArrowRight className="h-4 w-4" /></Link>
+              </div>
+            </div>
+          </div>
+        </AnimatedSection>
+      )}
+
+      {error && (
+        <div className="mt-4 rounded-xl bg-danger/5 border border-danger/20 px-4 py-3 text-sm text-danger">{error}</div>
+      )}
 
       {/* Order items */}
       <AnimatedSection delay={0.1}>
