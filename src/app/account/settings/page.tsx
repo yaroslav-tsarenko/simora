@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Shield, Bell, Globe, Trash2, LogOut, AlertTriangle } from 'lucide-react';
 import { DashboardSidebar } from '@/components/layout/DashboardSidebar';
+import { Switch } from '@/components/ui/Switch';
 import { useApp } from '@/hooks/AppProvider';
 import { CURRENCIES } from '@/lib/currency';
 import { Currency } from '@/types';
@@ -85,18 +86,17 @@ export default function SettingsPage() {
                 { key: 'marketing' as const, label: 'Marketing Emails', desc: 'Get news about deals, new destinations, and promotions' },
                 { key: 'priceAlerts' as const, label: 'Price Alerts', desc: 'Be notified when prices drop for your favourite destinations' },
               ].map(({ key, label, desc }) => (
-                <div key={key} className="flex items-start justify-between gap-4">
+                <label key={key} htmlFor={`notif-${key}`} className="flex items-center justify-between gap-4 rounded-xl px-1 py-1 cursor-pointer">
                   <div>
                     <p className="text-sm font-medium text-text">{label}</p>
-                    <p className="text-xs text-text-light">{desc}</p>
+                    <p className="text-xs text-text-light mt-0.5">{desc}</p>
                   </div>
-                  <button
-                    onClick={() => setNotifications((n) => ({ ...n, [key]: !n[key] }))}
-                    className={`relative h-6 w-11 rounded-full transition-colors shrink-0 ${notifications[key] ? 'bg-primary' : 'bg-border'}`}
-                  >
-                    <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${notifications[key] ? 'translate-x-5' : 'translate-x-0.5'}`} />
-                  </button>
-                </div>
+                  <Switch
+                    id={`notif-${key}`}
+                    checked={notifications[key]}
+                    onChange={(val) => setNotifications((n) => ({ ...n, [key]: val }))}
+                  />
+                </label>
               ))}
             </div>
           </div>
