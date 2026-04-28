@@ -1,0 +1,61 @@
+import Link from 'next/link';
+import { footerSections } from '@/data/navigation';
+import { PaymentLogos } from '@/components/ui/PaymentLogos';
+
+export function Footer() {
+  return (
+    <footer className="border-t border-border bg-surface">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                <span className="text-sm font-bold text-white">S</span>
+              </div>
+              <span className="text-xl font-bold text-text">Simora</span>
+            </Link>
+            <p className="mt-4 text-sm text-text-light leading-relaxed">
+              Stay connected worldwide with affordable eSIM data plans. No plastic, no hassle — just scan and go.
+            </p>
+            <div className="mt-5">
+              <PaymentLogos />
+            </div>
+          </div>
+          {footerSections.map((section) => (
+            <div key={section.title}>
+              <h3 className="font-semibold text-text">{section.title}</h3>
+              <ul className="mt-3 space-y-2">
+                {section.links.map((link) => (
+                  <li key={link.href + link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-text-light hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+          <p className="text-sm text-text-light">
+            © {new Date().getFullYear()} Simora. All rights reserved.
+          </p>
+          <div className="flex gap-6">
+            <Link href="/terms" className="text-sm text-text-light hover:text-primary transition-colors">
+              Terms
+            </Link>
+            <Link href="/privacy" className="text-sm text-text-light hover:text-primary transition-colors">
+              Privacy
+            </Link>
+            <Link href="/contact" className="text-sm text-text-light hover:text-primary transition-colors">
+              Contact
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
