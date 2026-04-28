@@ -25,7 +25,7 @@ export default function AccountPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <DashboardSidebar activePath="/account" />
-      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
+      <div className="flex-1 min-w-0 py-8 lg:pl-10">
         <h1 className="text-2xl font-bold text-text">Welcome back, {user?.name}</h1>
         <p className="mt-1 text-text-light">Here&apos;s an overview of your account.</p>
 

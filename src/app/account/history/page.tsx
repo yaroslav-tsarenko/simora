@@ -31,7 +31,7 @@ export default function PurchaseHistoryPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <DashboardSidebar activePath="/account/history" />
-      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
+      <div className="flex-1 min-w-0 py-8 lg:pl-10">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-text">Purchase History</h1>

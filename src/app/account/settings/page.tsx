@@ -29,7 +29,7 @@ export default function SettingsPage() {
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <DashboardSidebar activePath="/account/settings" />
-      <div className="flex-1 px-4 py-8 sm:px-6 lg:px-10 max-w-3xl">
+      <div className="flex-1 min-w-0 py-8 lg:pl-10 max-w-3xl">
         <h1 className="text-2xl font-bold text-text">Settings</h1>
         <p className="mt-1 text-text-light">Manage your account preferences.</p>
 
