@@ -8,7 +8,7 @@ import '@/styles/globals.css';
 const geist = Geist({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: { default: 'Simora — eSIM Marketplace', template: '%s | Simora' },
+  title: { default: 'simora — eSIM Marketplace', template: '%s | simora' },
   description: 'Stay connected worldwide with affordable eSIM data plans. Browse 190+ countries, buy instantly, and get online in minutes.',
   icons: { icon: '/favicon.svg' },
 };

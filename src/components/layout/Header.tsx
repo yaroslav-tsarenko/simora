@@ -9,6 +9,7 @@ import { regions } from '@/data/countries';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { CurrencySelector } from '@/components/ui/CurrencySelector';
 import { WalletBalance } from '@/components/ui/WalletBalance';
+import { Logo } from '@/components/ui/Logo';
 import { useApp } from '@/hooks/AppProvider';
 
 export function Header() {
@@ -21,11 +22,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-white/95 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center gap-4">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-white">S</span>
-            </div>
-            <span className="text-xl font-bold text-text">Simora</span>
+          <Link href="/" className="shrink-0">
+            <Logo />
           </Link>
 
           <div className="hidden lg:flex flex-1 max-w-md mx-4">
