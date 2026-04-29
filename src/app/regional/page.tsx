@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Globe, MapPin, CheckCircle } from 'lucide-react';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -9,11 +10,11 @@ import { useApp } from '@/hooks/AppProvider';
 import { regionalPlans } from '@/data/regional';
 import { EsimPlan } from '@/types';
 
-const regionIcons: Record<string, string> = {
-  Europe: '🇪🇺',
-  Asia: '🌏',
-  'Middle East': '🕌',
-  Americas: '🌎',
+const regionImages: Record<string, string> = {
+  Europe: '/illustrations/continent-europe.svg',
+  Asia: '/illustrations/continent-asia.svg',
+  'Middle East': '/illustrations/continent-middle-east.svg',
+  Americas: '/illustrations/continent-americas.svg',
 };
 
 export default function RegionalPage() {
@@ -56,8 +57,14 @@ export default function RegionalPage() {
             <div className="rounded-3xl border border-border bg-surface/30 p-6 sm:p-10">
               {/* Region header */}
               <div className="mb-8">
-                <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{regionIcons[region.region]}</span>
+                <div className="flex items-center gap-4 mb-3">
+                  <Image
+                    src={regionImages[region.region] || '/illustrations/continent-europe.svg'}
+                    alt={region.region}
+                    width={56}
+                    height={56}
+                    className="h-14 w-14 rounded-xl"
+                  />
                   <h3 className="text-2xl font-bold text-text sm:text-3xl">
                     {region.region}
                   </h3>

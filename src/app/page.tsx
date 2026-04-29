@@ -17,12 +17,14 @@ import {
   Clock,
   Signal,
 } from 'lucide-react';
+import Image from 'next/image';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { SearchBar } from '@/components/ui/SearchBar';
 import { FAQAccordion } from '@/components/ui/FAQAccordion';
 import { CountryCard } from '@/components/cards/CountryCard';
 import { BlogCard } from '@/components/cards/BlogCard';
+import { HeroSimCards } from '@/components/ui/HeroSimCards';
 import { getPopularCountries, countries } from '@/data/countries';
 import { regionalPlans } from '@/data/regional';
 import { globalPlans } from '@/data/global';
@@ -48,29 +50,41 @@ export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-white to-accent-light/20 py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-4 text-center">
-          <AnimatedSection>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
-              <Sparkles className="h-4 w-4" />
-              Trusted by 500,000+ travellers worldwide
-            </span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-text sm:text-5xl md:text-6xl">
-              Stay Connected{' '}
-              <span className="text-primary">Worldwide</span>
-            </h1>
-            <p className="mt-5 text-lg text-text-light md:text-xl max-w-2xl mx-auto">
-              Affordable eSIM data plans for 190+ countries. Buy online, scan a QR code, and get online in minutes — no physical SIM card needed.
-            </p>
-          </AnimatedSection>
-          <AnimatedSection delay={0.15}>
-            <div className="mt-8 mx-auto max-w-xl">
-              <SearchBar large />
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-white to-accent-light/20 py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+            {/* Left — text */}
+            <div className="text-center lg:text-left">
+              <AnimatedSection>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
+                  <Sparkles className="h-4 w-4" />
+                  Trusted by 500,000+ travellers worldwide
+                </span>
+                <h1 className="text-4xl font-extrabold tracking-tight text-text sm:text-5xl lg:text-6xl">
+                  Stay Connected{' '}
+                  <span className="text-primary">Worldwide</span>
+                </h1>
+                <p className="mt-5 text-lg text-text-light md:text-xl max-w-xl mx-auto lg:mx-0">
+                  Affordable eSIM data plans for 190+ countries. Buy online, scan a QR code, and get online in minutes — no physical SIM needed.
+                </p>
+              </AnimatedSection>
+              <AnimatedSection delay={0.15}>
+                <div className="mt-8 max-w-xl mx-auto lg:mx-0">
+                  <SearchBar large />
+                </div>
+                <div className="mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                  {['🇺🇸 USA', '🇬🇧 UK', '🇹🇷 Turkey', '🇯🇵 Japan', '🇫🇷 France', '🇪🇸 Spain'].map((c) => (
+                    <span key={c} className="rounded-full bg-white border border-border px-3 py-1 text-sm text-text-light shadow-sm">{c}</span>
+                  ))}
+                </div>
+              </AnimatedSection>
             </div>
-            <p className="mt-3 text-sm text-text-light">
-              Popular: USA, UK, Turkey, Japan, France, Spain
-            </p>
-          </AnimatedSection>
+
+            {/* Right — SIM card visuals */}
+            <AnimatedSection delay={0.1} className="hidden md:block">
+              <HeroSimCards />
+            </AnimatedSection>
+          </div>
         </div>
       </section>
 
@@ -123,12 +137,17 @@ export default function HomePage() {
 
             {activeTab === 'regional' && (
               <div className="grid gap-5 sm:grid-cols-2">
-                {regionalPlans.map((rp) => (
+                {regionalPlans.map((rp) => {
+                  const imgMap: Record<string, string> = { Europe: '/illustrations/continent-europe.svg', Asia: '/illustrations/continent-asia.svg', 'Middle East': '/illustrations/continent-middle-east.svg', Americas: '/illustrations/continent-americas.svg' };
+                  return (
                   <div
                     key={rp.id}
                     className="rounded-2xl border border-border bg-white p-6 shadow-sm hover:shadow-md hover:border-primary/30 transition-all"
                   >
-                    <h3 className="text-xl font-bold text-text">{rp.region}</h3>
+                    <div className="flex items-center gap-3 mb-1">
+                      <Image src={imgMap[rp.region] || imgMap.Europe} alt={rp.region} width={40} height={40} className="h-10 w-10 rounded-lg" />
+                      <h3 className="text-xl font-bold text-text">{rp.region}</h3>
+                    </div>
                     <p className="mt-2 text-sm text-text-light">{rp.description}</p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       {rp.countries.slice(0, 5).map((c) => (
@@ -152,7 +171,8 @@ export default function HomePage() {
                       </span>
                     </p>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
