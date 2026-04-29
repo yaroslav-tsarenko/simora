@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" width="80" height="50">
-  <rect width="780" height="500" rx="40" fill="#F0F0F0" stroke="#CCCCCC" stroke-width="4"/>
-  <text x="390" y="210" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="100" fill="#1A1F71">PCI</text>
-  <text x="390" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="80" fill="#FF6600">3DS</text>
-  <path d="M300 370 h180" stroke="#10B981" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="320" cy="400" r="15" fill="#10B981"/>
-  <text x="350" y="410" font-family="Arial,sans-serif" font-size="30" fill="#64748B">Secure</text>
-</svg>
